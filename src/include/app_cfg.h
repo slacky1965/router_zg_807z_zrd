@@ -9,7 +9,7 @@
 /* for reporting */
 #define REPORTING_MIN           60              /* 1 min            */
 #define REPORTING_MAX           300             /* 5 min            */
-#define REPORTING_BATTERY_MIN   600             /* 10 minutes       */
+#define REPORTING_BATTERY_MIN   5               /* 5 sec            */
 #define REPORTING_BATTERY_MAX   3600            /* 1 hour           */
 #define REPORTING_MAX_MAX       65000           /* 18 hour          */
 
@@ -37,6 +37,7 @@
 #define DEBUG_BUTTON_EN                 OFF
 #define DEBUG_CONFIG_EN                 OFF
 #define DEBUG_ONOFF_EN                  ON
+#define DEBUG_REPEAT_EN                 ON
 #define DEBUG_TIME_EN                   OFF
 #define DEBUG_BATTERY_EN				OFF
 #define DEBUG_REPORTING_EN              OFF
@@ -93,6 +94,7 @@
 #endif
     #define CLOCK_SYS_CLOCK_HZ          48000000
     #define NV_ITEM_APP_USER_CFG        (NV_ITEM_APP_GP_TRANS_TABLE + 1)        // see sdk/proj/drivers/drv_nv.h
+    #define NV_ITEM_ZCL_ON_OFF_CFG      (NV_ITEM_APP_USER_CFG+1)
 #else
     #error "MCU is undefined!"
 #endif
@@ -137,12 +139,13 @@
  */
 #define ZCL_GROUP_SUPPORT                           OFF
 #define ZCL_SCENE_SUPPORT                           OFF
-#define ZCL_ON_OFF_SUPPORT                          OFF
-#define ZCL_ON_OFF_SWITCH_CFG_SUPPORT               OFF
 #define ZCL_OTA_SUPPORT                             ON
 #define ZCL_GP_SUPPORT                              ON
 #define ZCL_TIME_SUPPORT                            ON
 #define ZCL_POWER_CFG_SUPPORT						ON
+#define ZCL_ON_OFF_SUPPORT                          ON
+#define ZCL_ON_OFF_SWITCH_CFG_SUPPORT               ON
+#define ZCL_ALARMS_SUPPORT                          ON
 
 /**********************************************************************
  * Stack configuration

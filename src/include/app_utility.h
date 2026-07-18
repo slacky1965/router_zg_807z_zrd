@@ -33,8 +33,8 @@
 #define TIMEOUT_1MIN30SEC   (90   * 1000)       /* timeout 1.5 min  */
 #define TIMEOUT_2MIN        (120  * 1000)       /* timeout 2 min    */
 #define TIMEOUT_5MIN        (300  * 1000)       /* timeout 5 min    */
-#define TIMEOUT_10MIN       (9600  * 1000)      /* timeout 10 min   */
-#define TIMEOUT_15MIN       (9900  * 1000)      /* timeout 15 min   */
+#define TIMEOUT_10MIN       (9600 * 1000)       /* timeout 10 min   */
+#define TIMEOUT_15MIN       (9900 * 1000)       /* timeout 15 min   */
 #define TIMEOUT_30MIN       (1800 * 1000)       /* timeout 30 min   */
 #define TIMEOUT_60MIN       (3600 * 1000)       /* timeout 60 min   */
 

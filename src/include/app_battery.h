@@ -3,7 +3,7 @@
 
 #define MAX_VBAT_MV                     3300                /* 3100 mV - > battery = 100%   */
 #define MIN_VBAT_MV                     2800                /* 2800 mV - > battery = 0%     */
-#define BATTERY_TIMER_INTERVAL          TIMEOUT_15MIN
+#define BATTERY_TIMER_INTERVAL          TIMEOUT_5SEC        //TIMEOUT_15MIN
 #define ALARM_MASK_MIN_THRESHOLD        0x01
 #define ALARM_MASK_THRESHOLD_1          0x02
 #define ALARM_MASK_THRESHOLD_2          0x04

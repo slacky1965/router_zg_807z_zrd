@@ -177,15 +177,27 @@ static void app_zclWriteReqCmd(uint8_t epId, uint16_t clusterId, zclWriteCmd_t *
 
     APP_DEBUG(DEBUG_ZCL_CB_EN, "app_zclWriteReqCmd\r\n");
 
-    zcl_rfConfigAttr_t *rfPowerCfg = zcl_rfPowerAttrsGet();
-    zcl_powerAttr_t *powerCfg = zcl_powerAttrsGet();
     uint8_t numAttr = pWriteReqCmd->numAttr;
     zclWriteRec_t *attr = pWriteReqCmd->attrList;
     uint8_t tx_power;
     bool save = false;
 
     if (epId == APP_ENDPOINT1) {
-        if (clusterId == ZCL_CLUSTER_CUSTOM_RF_POWER_CFG) {
+
+        if (clusterId == ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG) {
+            for (u8 i = 0; i < numAttr; i++) {
+                if (attr[i].attrID == ZCL_ATTRID_SWITCH_ACTION) {
+                    uint8_t action = attr[i].attrData[0];
+                    APP_DEBUG(DEBUG_ZCL_CB_EN, "Switch action: %d by endPoint: %d\r\n", action, epId);
+                    if (action >= ZCL_SWITCH_ACTION_ON_OFF && action <= ZCL_SWITCH_ACTION_TOGGLE) {
+                        zcl_onOffCfgAttr_save();
+                    } else {
+                        zcl_onOffCfgAttr_restore();
+                    }
+                }
+            }
+        } else if (clusterId == ZCL_CLUSTER_CUSTOM_RF_POWER_CFG) {
+            zcl_rfConfigAttr_t *rfPowerCfg = zcl_rfPowerAttrsGet();
             for(uint8_t i = 0; i < numAttr; i++) {
                 if(attr[i].attrID == ZCL_ATTRID_CUSTOM_TX_POWER) {
                     tx_power = attr[i].attrData[0];
@@ -199,6 +211,7 @@ static void app_zclWriteReqCmd(uint8_t epId, uint16_t clusterId, zclWriteCmd_t *
                 }
             }
         } else if (clusterId == ZCL_CLUSTER_GEN_POWER_CFG) {
+            zcl_powerAttr_t *powerCfg = zcl_powerAttrsGet();
             for(uint8_t i = 0; i < numAttr; i++) {
                 if(attr[i].attrID == ZCL_ATTRID_BATTERY_ALARM_MASK) {
                     uint8_t mask = attr[i].attrData[0];
@@ -935,4 +948,37 @@ status_t app_rfPowerCfgCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void 
     return ZCL_STA_SUCCESS;
 }
 
+void zcl_alarm_removeAllAlarmEntries(u8 endpoint);
 
+/*********************************************************************
+ * @fn      app_alarmsCb
+ *
+ * @brief   Handler for ZCL Identify command.
+ *
+ * @param   pAddrInfo
+ * @param   cmdId
+ * @param   cmdPayload
+ *
+ * @return  status_t
+ */
+status_t app_alarmsCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload) {
+
+
+    APP_DEBUG(DEBUG_ZCL_CB_EN, "app_alarmsCb\r\n");
+
+    switch (cmdId) {
+        case ZCL_CMD_ALARM_RESET_ALARM:
+            break;
+        case ZCL_CMD_ALARM_RESET_ALL:
+            zcl_alarm_removeAllAlarmEntries(pAddrInfo->dstEp);
+            break;
+        case ZCL_CMD_ALARM_GET_ALARM:
+            // обработка в zcl_alarm.c уже есть
+            break;
+        case ZCL_CMD_ALARM_RESET_ALARM_LOG:
+            break;
+        default:
+            break;
+    }
+    return ZCL_STA_SUCCESS;
+}

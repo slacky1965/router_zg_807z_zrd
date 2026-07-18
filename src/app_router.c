@@ -58,6 +58,43 @@ bdb_commissionSetting_t g_bdbCommissionSetting = {
 
 
 
+static void afApsAckCb(void *args) {
+
+    apsdeDataConf_t *pApsDataCnf = (apsdeDataConf_t *)args;
+    repeat_cmd_t *r_cmd = app_find_repeat_cmd(pApsDataCnf->clusterId,
+                                              pApsDataCnf->srcEndpoint,
+                                              pApsDataCnf->dstEndpoint,
+                                              pApsDataCnf->dstAddrMode,
+                                              (tl_zb_addr_t*)&pApsDataCnf->dstAddr);
+#if UART_PRINTF_MODE
+    APP_DEBUG(DEBUG_REPEAT_EN, "afApsAckCb() - status: 0x%02x, clId: 0x%04x, src_ep: %d, dst_ep: %d, ",
+            pApsDataCnf->status, pApsDataCnf->clusterId, pApsDataCnf->srcEndpoint, pApsDataCnf->dstEndpoint);
+    if (pApsDataCnf->dstAddrMode == APS_SHORT_GROUPADDR_NOEP) {
+        APP_DEBUG(DEBUG_REPEAT_EN, "short_addr: 0x%04x, ", pApsDataCnf->dstAddr.addr_short);
+    } else {
+        APP_DEBUG(DEBUG_REPEAT_EN, "ieee: 0x%02x%02x%02x%02x%02x%02x%02x%02x, ",
+                pApsDataCnf->dstAddr.addr_long[0], pApsDataCnf->dstAddr.addr_long[1],
+                pApsDataCnf->dstAddr.addr_long[2], pApsDataCnf->dstAddr.addr_long[3],
+                pApsDataCnf->dstAddr.addr_long[4], pApsDataCnf->dstAddr.addr_long[5],
+                pApsDataCnf->dstAddr.addr_long[6], pApsDataCnf->dstAddr.addr_long[7]);
+
+        APP_DEBUG(DEBUG_REPEAT_EN, "cmp_addr: %d, ", ZB_64BIT_ADDR_CMP(pApsDataCnf->dstAddr.addr_long, pApsDataCnf->dstAddr.addr_long));
+    }
+    APP_DEBUG(DEBUG_REPEAT_EN, "r_cmd: %s\r\n", r_cmd?"true":"false");
+#endif
+
+    if (r_cmd) {
+        if (pApsDataCnf->status != APS_STATUS_SUCCESS) {
+            if (pApsDataCnf->dstAddrMode != APS_SHORT_GROUPADDR_NOEP) {
+                if (pApsDataCnf->clusterId == ZCL_CLUSTER_GEN_ON_OFF) {
+                    TL_ZB_TIMER_SCHEDULE(app_repeatCmdOnOff, r_cmd, TIMEOUT_250MS);
+                }
+            }
+        }
+        r_cmd->used = false;
+    }
+}
+
 /*********************************************************************
  * @fn      stack_init
  *
@@ -95,12 +132,14 @@ void user_app_init(void)
     zcl_init(app_zclProcessIncomingMsg);
 
     /* Register endPoint */
-    af_endpointRegister(APP_ENDPOINT1, (af_simple_descriptor_t *)&app_ep_simpleDesc, zcl_rx_handler, NULL);
+    af_endpointRegister(APP_ENDPOINT1, (af_simple_descriptor_t *)&app_ep_simpleDesc, zcl_rx_handler, afApsAckCb);
 
     zcl_reportingTabInit();
 
     start_message();
     router_settings_restore();
+    zcl_onOffCfgAttr_restore();
+    onoffStatus_restore();
 
     /* Register ZCL specific cluster information */
     zcl_register(APP_ENDPOINT1, APP_CB_CLUSTER_NUM, (zcl_specClusterInfo_t *)g_appClusterList);

@@ -43,6 +43,8 @@ const uint16_t app_ep_inClusterList[] = {
     ZCL_CLUSTER_GEN_TIME,
     ZCL_CLUSTER_GEN_POWER_CFG,
     ZCL_CLUSTER_CUSTOM_RF_POWER_CFG,
+    ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG,
+    ZCL_CLUSTER_TOUCHLINK_COMMISSIONING,
 };
 
 /**
@@ -50,6 +52,7 @@ const uint16_t app_ep_inClusterList[] = {
  */
 const uint16_t app_ep_outClusterList[] = {
     ZCL_CLUSTER_OTA,
+    ZCL_CLUSTER_GEN_ON_OFF,
 };
 
 /**
@@ -150,6 +153,23 @@ const zclAttrInfo_t powerCfg_attrTbl[] =
 
 #define ZCL_POWER_CFG_ATTR_NUM       sizeof(powerCfg_attrTbl) / sizeof(zclAttrInfo_t)
 
+/* On/Off Config */
+
+zcl_onOffSwitchCfgAttr_t g_zcl_onOffSwitchCfgAttrs = {
+    .switchType     = ZCL_SWITCH_TYPE_TOGGLE,
+    .switchActions  = ZCL_SWITCH_ACTION_OFF_ON,
+};
+
+const zclAttrInfo_t onoff_switch_cfg_attrTbl[] =
+{
+    { ZCL_ATTRID_SWITCH_TYPE,               ZCL_ENUM8,   R,   (u8*)&g_zcl_onOffSwitchCfgAttrs.switchType    },
+    { ZCL_ATTRID_SWITCH_ACTION,             ZCL_ENUM8,   RWR, (u8*)&g_zcl_onOffSwitchCfgAttrs.switchActions },
+
+    { ZCL_ATTRID_GLOBAL_CLUSTER_REVISION,   ZCL_UINT16,  R,   (u8*)&zcl_attr_global_clusterRevision         },
+};
+
+#define ZCL_ON_OFF_SWITCH_CFG_ATTR_NUM      sizeof(onoff_switch_cfg_attrTbl) / sizeof(zclAttrInfo_t)
+
 zcl_timeAttr_t g_zcl_timeAttrs = {
     .time_utc   = 0,
 //    .time_local = 0xffffffff,
@@ -184,11 +204,12 @@ const zclAttrInfo_t rf_powerCfg_attrTbl[] = {
  */
 const zcl_specClusterInfo_t g_appClusterList[] =
 {
-    {ZCL_CLUSTER_GEN_BASIC,           MANUFACTURER_CODE_NONE, ZCL_BASIC_ATTR_NUM,		 basic_attrTbl,       zcl_basic_register,      app_basicCb     },
-    {ZCL_CLUSTER_GEN_IDENTIFY,        MANUFACTURER_CODE_NONE, ZCL_IDENTIFY_ATTR_NUM,     identify_attrTbl,    zcl_identify_register,   app_identifyCb  },
-    {ZCL_CLUSTER_GEN_POWER_CFG,	      MANUFACTURER_CODE_NONE, ZCL_POWER_CFG_ATTR_NUM,	 powerCfg_attrTbl,	  zcl_powerCfg_register,   app_powerCfgCb  },
-    {ZCL_CLUSTER_GEN_TIME,		      MANUFACTURER_CODE_NONE, ZCL_TIME_ATTR_NUM,		 time_attrTbl,        zcl_time_register,       app_timeCb      },
-    {ZCL_CLUSTER_CUSTOM_RF_POWER_CFG, SLACKY_MANUF_CODE,      ZCL_RF_POWER_CFG_ATTR_NUM, rf_powerCfg_attrTbl, zcl_rfPowerCfg_register, app_rfPowerCfgCb},
+    {ZCL_CLUSTER_GEN_BASIC,                MANUFACTURER_CODE_NONE, ZCL_BASIC_ATTR_NUM,		       basic_attrTbl,            zcl_basic_register,          app_basicCb     },
+    {ZCL_CLUSTER_GEN_IDENTIFY,             MANUFACTURER_CODE_NONE, ZCL_IDENTIFY_ATTR_NUM,          identify_attrTbl,         zcl_identify_register,       app_identifyCb  },
+    {ZCL_CLUSTER_GEN_POWER_CFG,	           MANUFACTURER_CODE_NONE, ZCL_POWER_CFG_ATTR_NUM,	       powerCfg_attrTbl,	     zcl_powerCfg_register,       app_powerCfgCb  },
+    {ZCL_CLUSTER_GEN_ON_OFF_SWITCH_CONFIG, MANUFACTURER_CODE_NONE, ZCL_ON_OFF_SWITCH_CFG_ATTR_NUM, onoff_switch_cfg_attrTbl, zcl_onOffSwitchCfg_register, NULL            },
+    {ZCL_CLUSTER_GEN_TIME,		           MANUFACTURER_CODE_NONE, ZCL_TIME_ATTR_NUM,		       time_attrTbl,             zcl_time_register,           app_timeCb      },
+    {ZCL_CLUSTER_CUSTOM_RF_POWER_CFG,      SLACKY_MANUF_CODE,      ZCL_RF_POWER_CFG_ATTR_NUM,      rf_powerCfg_attrTbl,      zcl_rfPowerCfg_register,     app_rfPowerCfgCb},
 };
 
 uint8_t APP_CB_CLUSTER_NUM = (sizeof(g_appClusterList)/sizeof(g_appClusterList[0]));

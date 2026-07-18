@@ -1,7 +1,8 @@
 #ifndef SRC_INCLUDE_APP_ENDPOINT_CFG_H_
 #define SRC_INCLUDE_APP_ENDPOINT_CFG_H_
 
-#define APP_ENDPOINT1 0x01
+#define APP_ENDPOINT1   0x01
+#define ENDPOINT_1      0x01
 
 /**
  *  @brief Defined for basic cluster attributes
@@ -76,18 +77,19 @@ typedef struct{
     uint32_t batteryAlarmState;
 } zcl_powerAttr_t;
 
-///**
-// *  @brief Defined for on/off cluster attributes
-// */
-//typedef struct {
-//    uint16_t onTime;
-//    uint16_t offWaitTime;
-//    uint8_t  startUpOnOff;
-//    bool     onOff;
-//    bool     globalSceneControl;
-//    bool     key_lock;
-//    uint8_t  led_control;
-//} zcl_onOffAttr_t;
+/**
+ *  @brief Defined for alarm cluster attributes
+ */
+typedef struct {
+    uint16_t alarmCount;
+} zcl_alarmAttr_t;
+
+typedef struct {
+    uint8_t switchType;
+    uint8_t switchActions;
+} zcl_onOffSwitchCfgAttr_t;
+
+
 
 extern uint8_t APP_CB_CLUSTER_NUM;
 extern const zcl_specClusterInfo_t  g_appClusterList[];
@@ -98,11 +100,15 @@ extern zcl_basicAttr_t              g_zcl_basicAttrs;
 extern zcl_identifyAttr_t           g_zcl_identifyAttrs;
 extern zcl_timeAttr_t				g_zcl_timeAttrs;
 extern zcl_powerAttr_t				g_zcl_powerAttrs;
+extern zcl_onOffSwitchCfgAttr_t     g_zcl_onOffSwitchCfgAttrs;
 extern zcl_rfConfigAttr_t           g_zcl_rfPowerAttrs;
+extern zcl_alarmAttr_t              g_zcl_alarmAttrs;
 
 #define zcl_timeAttrsGet()         	&g_zcl_timeAttrs
 #define zcl_powerAttrsGet()         &g_zcl_powerAttrs
+#define zcl_onOffSwitchCfgAttrsGet() &g_zcl_onOffSwitchCfgAttrs
 #define zcl_rfPowerAttrsGet()       &g_zcl_rfPowerAttrs
+#define zcl_alarmAttrsGet()         &g_zcl_alarmAttrs
 //#define zcl_groupAttrsGet()         &g_zcl_groupAttrs
 //#define zcl_sceneAttrGet()          &g_zcl_sceneAttrs
 //#define zcl_onOffAttrsGet()         &g_zcl_onOffAttrs

@@ -8,6 +8,7 @@
 #include "gp.h"
 
 #include "zcl_custom_rf_power_cfg.h"
+#include "zcl_onoffSwitchCfg.h"
 #include "app_utility.h"
 #include "app_settings.h"
 #include "app_endpoint_cfg.h"
@@ -16,6 +17,9 @@
 #include "app_battery.h"
 #include "app_time.h"
 #include "app_reporting.h"
+#include "app_on_off.h"
+#include "app_repeat_cmd.h"
+
 
 typedef struct{
     uint8_t keyType; /* CERTIFICATION_KEY or MASTER_KEY key for touch-link or distribute network
@@ -52,6 +56,7 @@ status_t app_identifyCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *c
 status_t app_powerCfgCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 status_t app_timeCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 status_t app_rfPowerCfgCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
+status_t app_alarmsCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 //status_t app_sceneCb(zclIncomingAddrInfo_t *pAddrInfo, uint8_t cmdId, void *cmdPayload);
 
 void app_leaveCnfHandler(nlme_leave_cnf_t *pLeaveCnf);

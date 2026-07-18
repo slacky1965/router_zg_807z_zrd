@@ -1,0 +1,28 @@
+{
+  "Slacky-DIY":
+  [
+    {
+      "description":    "Tuya router with custom firmware",
+      "modelNames":     ["Router-ZG-807Z-SlD"],
+      "properties":     ["batteryPercentage", "switchMode"],
+      "actions":        ["switchMode"],
+      "bindings":       ["battery"],
+      "reportings":     ["batteryPercentage"],
+      "exposes":        ["battery", "voltageLow", "transmitPower", "switchMode", "uptime"],
+      "options":
+      {
+        "powerSource": 3,
+        "batteryReporting":  {"minInterval": 5, "maxInterval": 3600, "valueChange": 0},
+        "customAttributes":
+        {
+          "transmitPower":  {"type": "enum", "clusterId": 65381, "attributeId": 0, "dataType": 48, "action": true},
+          "voltageLow":     {"type": "bool", "clusterId": 1,     "attributeId": 62,    "dataType": 28, "reporting": {"minInterval": 0, "maxInterval": 3600, "valueChange": 0}},
+          "uptime":         {"type": "value", "clusterId": 10,    "attributeId": 0,     "dataType": 226, "reporting": {"minInterval": 60, "maxInterval": 3600, "valueChange": 15}, "binding": true}
+        },
+        "transmitPower":  {"type": "select", "enum": {"0": "0 dBm", "1": "5 dBm", "2": "10 dBm"}},
+        "switchMode":     {"enum": {"0": "onOff", "1": "offOn", "2": "toggle"}},
+        "uptime":         {"type": "sensor", "unit": "sec"}
+      }
+    }
+  ]
+}

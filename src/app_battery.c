@@ -1,6 +1,8 @@
 #include "app_router.h"
 
 static uint32_t batteryAlarmState = 0;
+static uint32_t prevAlarmState = 0;
+static bool first_run = true;
 
 // 2800..3300 mv - 0..100%
 static uint8_t get_battery_level(uint16_t battery_mv) {
@@ -26,14 +28,44 @@ int32_t app_batteryCb(void *arg) {
 
     batteryAlarmState = 0;
     if ((powerAttr->batteryAlarmMask & ALARM_MASK_MIN_THRESHOLD) && voltage <= powerAttr->batteryVoltageMinThreshold) {
-        batteryAlarmState |= 0x01;  // Bit 0: Alarm1
+        batteryAlarmState |= BIT(0);
     }
     if ((powerAttr->batteryAlarmMask & ALARM_MASK_THRESHOLD_1) && voltage <= powerAttr->batteryVoltageThreshold1) {
-        batteryAlarmState |= 0x02;  // Bit 1: Alarm2
+        batteryAlarmState |= BIT(1);
     }
     if ((powerAttr->batteryAlarmMask & ALARM_MASK_THRESHOLD_2) && voltage <= powerAttr->batteryVoltageThreshold2) {
-        batteryAlarmState |= 0x04;  // Bit 2: Alarm3
+        batteryAlarmState |= BIT(2);
     }
+
+    uint8_t cmd = 0xFF;
+    if (batteryAlarmState != 0) {
+        switch (g_zcl_onOffSwitchCfgAttrs.switchActions) {
+            case ZCL_SWITCH_ACTION_ON_OFF:  cmd = ZCL_CMD_ONOFF_ON;    break;
+            case ZCL_SWITCH_ACTION_OFF_ON:  cmd = ZCL_CMD_ONOFF_OFF;   break;
+            case ZCL_SWITCH_ACTION_TOGGLE:
+                if (prevAlarmState == 0) cmd = ZCL_CMD_ONOFF_TOGGLE;
+                break;
+        }
+    } else {
+        switch (g_zcl_onOffSwitchCfgAttrs.switchActions) {
+            case ZCL_SWITCH_ACTION_ON_OFF:  cmd = ZCL_CMD_ONOFF_OFF;   break;
+            case ZCL_SWITCH_ACTION_OFF_ON:  cmd = ZCL_CMD_ONOFF_ON;    break;
+            case ZCL_SWITCH_ACTION_TOGGLE:
+                if (prevAlarmState != 0) cmd = ZCL_CMD_ONOFF_TOGGLE;
+                break;
+        }
+    }
+
+    if (first_run) {
+        first_run = false;
+    } else if (cmd != 0xFF && cmd != app_onoff_status.onoff_status) {
+        cmdOnOff(cmd);
+        app_onoff_status.onoff_status = (cmd == ZCL_CMD_ONOFF_TOGGLE)
+                                        ? app_onoff_status.onoff_status ^ 1 : cmd;
+        onoffStatus_save();
+    }
+
+    prevAlarmState = batteryAlarmState;
 
      APP_DEBUG(DEBUG_BATTERY_EN, "Voltage_raw: %d\r\n", voltage_raw);
      APP_DEBUG(DEBUG_BATTERY_EN, "Voltage:     %d\r\n", voltage);

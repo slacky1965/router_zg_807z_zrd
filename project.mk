@@ -6,6 +6,7 @@ OUT_DIR += \
 OBJS += \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_reporting.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl/zcl_custom_rf_power_cfg.o \
+$(OUT_PATH)/$(SRC_PATH)/zcl/zcl_onoffSwitchCfg.o \
 $(OUT_PATH)/$(SRC_PATH)/main.o \
 $(OUT_PATH)/$(SRC_PATH)/flash.o \
 $(OUT_PATH)/$(SRC_PATH)/app_arith64.o \
@@ -16,6 +17,8 @@ $(OUT_PATH)/$(SRC_PATH)/app_button.o \
 $(OUT_PATH)/$(SRC_PATH)/app_endpoint_cfg.o \
 $(OUT_PATH)/$(SRC_PATH)/zb_appCb.o \
 $(OUT_PATH)/$(SRC_PATH)/zcl_appCb.o \
+$(OUT_PATH)/$(SRC_PATH)/app_on_off.o \
+$(OUT_PATH)/$(SRC_PATH)/app_repeat_cmd.o \
 $(OUT_PATH)/$(SRC_PATH)/app_reporting.o \
 $(OUT_PATH)/$(SRC_PATH)/app_time.o \
 $(OUT_PATH)/$(SRC_PATH)/app_settings.o \
