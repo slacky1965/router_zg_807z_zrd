@@ -3,6 +3,7 @@
 static uint32_t batteryAlarmState = 0;
 static uint32_t prevAlarmState = 0;
 static bool first_run = true;
+static uint16_t vbat_buf[3];
 
 // 2800..3300 mv - 0..100%
 static uint8_t get_battery_level(uint16_t battery_mv) {
@@ -23,8 +24,23 @@ int32_t app_batteryCb(void *arg) {
     zcl_powerAttr_t *powerAttr = zcl_powerAttrsGet();
 
     uint16_t voltage_raw = drv_get_adc_data();
-    uint8_t voltage = (uint8_t)(voltage_raw/100);
-    uint8_t level = get_battery_level(voltage_raw);
+
+    if (first_run) {
+        vbat_buf[0] = vbat_buf[1] = vbat_buf[2] = voltage_raw;
+    } else {
+        vbat_buf[2] = vbat_buf[1];
+        vbat_buf[1] = vbat_buf[0];
+        vbat_buf[0] = voltage_raw;
+    }
+
+    /* median of 3 ends up in b */
+    uint16_t a = vbat_buf[0], b = vbat_buf[1], c = vbat_buf[2];
+    if (a > b) { uint16_t t = a; a = b; b = t; }
+    if (b > c) { uint16_t t = b; b = c; c = t; }
+    if (a > b) { uint16_t t = a; a = b; b = t; }
+
+    uint8_t voltage = (uint8_t)(b/100);
+    uint8_t level = get_battery_level(b);
 
     batteryAlarmState = 0;
     if ((powerAttr->batteryAlarmMask & ALARM_MASK_MIN_THRESHOLD) && voltage <= powerAttr->batteryVoltageMinThreshold) {
