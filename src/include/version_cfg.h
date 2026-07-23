@@ -33,7 +33,7 @@
 #define MCU_CORE_8258               1
 #endif
 
-#define CHIP_TYPE                   TLSR_8258_512K //TLSR_8258_1M //
+#define CHIP_TYPE                   TLSR_8258_1M //TLSR_8258_512K //
 
 #define APP_RELEASE                 0x10        //app release 1.0
 #define APP_BUILD                   0x01        //app build 01, full version - v1.0.01
