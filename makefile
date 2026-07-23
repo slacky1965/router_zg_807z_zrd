@@ -190,10 +190,7 @@ $(BIN_FILE): $(ELF_FILE)
 	@python3 $(TL_CHECK) $(BIN_FILE)
 	@cp $(BIN_FILE) $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin
 	@echo 'Create zigbee OTA file'
-	@echo 'Create zigbee OTA file'
 	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin 
-	@echo 'Create zigbee Tuya OTA file'
-	@python3 $(MAKE_OTA) -t $(PROJECT_NAME) -m 4098 -i 5634 -v0x1111114b -s "Slacky-DIY OTA" $(BIN_PATH)/$(PROJECT_NAME)_$(VERSION_RELEASE).$(VERSION_BUILD).bin   
 	@echo ' '
 	@echo 'Finished building: $@'
 	@echo ' '
