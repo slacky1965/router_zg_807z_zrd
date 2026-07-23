@@ -5,11 +5,11 @@
 
 	CK-BL702-ROUTER-01(7018) _TZ3000_piuensvr
 
-<img src="doc/images/Router-ZG-807Z-SlD.png" width="50%" height="auto"/>
+<img src="doc/images/Router-ZG-807Z-SlD.png" width="75%" height="auto"/>
 
-<img src="doc/images/router_board_top.jpg" width="75%" height="auto"/>
+<img src="doc/images/router_board_top.jpg" width="80%" height="auto"/>
 
-<img src="doc/images/router_board_bottom.jpg" width="75%" height="auto"/>
+<img src="doc/images/router_board_bottom.jpg" width="80%" height="auto"/>
 
 ---
 
