@@ -9,9 +9,9 @@
 
 <img src="doc/images/Router-ZG-807Z-SlD.png" width="75%" height="auto"/>
 
-<img src="doc/images/router_board_top.jpg" width="80%" height="auto"/>
+<img src="doc/images/router_board_top.jpg"/>
 
-<img src="doc/images/router_board_bottom.jpg" width="80%" height="auto"/>
+<img src="doc/images/router_board_bottom.jpg"/>
 
 <img src="doc/images/z2m_about.jpg"/>
 
