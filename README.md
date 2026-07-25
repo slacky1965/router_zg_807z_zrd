@@ -11,8 +11,6 @@
 
 <img src="doc/images/router_board_top.jpg"/>
 
-<img src="doc/images/router_board_bottom.jpg"/>
-
 <img src="doc/images/z2m_about.jpg"/>
 
 <img src="doc/images/z2m_exposes.jpg"/>
@@ -29,7 +27,7 @@
 
 ### Роутер можно обновить только проводами.
 
-<img src="doc/images/ts0201_wing_pcb_bottom.jpg"/>
+<img src="doc/images/router_board_bottom.jpg"/>
 
 Как залить прошивку можно почитать [тут](https://github.com/pvvx/ATC_MiThermometer?tab=readme-ov-file#the-usb-com-adapter-writes-the-firmware-in-explorer-web-version). 
  
