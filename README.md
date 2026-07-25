@@ -4,12 +4,24 @@
 [![](https://img.shields.io/github/v/release/slacky1965/router_zg_807z_zrd.svg)](https://github.com/slacky1965/router_zg_807z_zrd/releases)
 
 	CK-BL702-ROUTER-01(7018) _TZ3000_piuensvr
+	
+**Оригинальная прошивка имеет кластер ОТА, но обновление не поддерживает.**
 
 <img src="doc/images/Router-ZG-807Z-SlD.png" width="75%" height="auto"/>
 
-<img src="doc/images/router_board_top.jpg" width="80%" height="auto"/>
+<img src="doc/images/router_board_top.jpg"/>
 
-<img src="doc/images/router_board_bottom.jpg" width="80%" height="auto"/>
+<img src="doc/images/router_board_bottom.jpg"/>
+
+<img src="doc/images/z2m_about.jpg"/>
+
+<img src="doc/images/z2m_exposes.jpg"/>
+
+---
+
+Предназначен для обеспечения функционирования сети `zigbee` при полном обесточивании помещения. Предполагается использование вместе с каким-нибудь небольшим бесперебойником, например на АКБ 18650, который имеет USB Type-A на выходе.
+
+Нормальным считается напряжение на входе USB более 3.0 вольт. Уверенно работает до 2.6 вольт.
 
 ---
 
