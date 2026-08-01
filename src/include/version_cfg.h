@@ -104,10 +104,13 @@
  * 0x28 - Tuya Temperature and Humidity sensors (board_z_wxd.h)
  * 0x29 - Tuya Temperature and Humidity sensors (*.h)
  * 0x2A - EKF Socket Stockholm TS011F _TZ321A_arrqgd67
+ * 0x2B - Ledron light CCT GU10 TS0502B_TZ3210_itpjzkwg
+ * 0x2C - Tuya Temperature and Humidity sensors TS0201 Wing (board_tzh13.h) with LCD
+ * 0x2D - Router CK-BL702-ROUTER-01(7018) _TZ3000_piuensvr
  *
  */
 
-#define IMAGE_TYPE_APP              (0x2A | (IMAGE_TYPE_BOOT_FLAG << 7))
+#define IMAGE_TYPE_APP              (0x2D | (IMAGE_TYPE_BOOT_FLAG << 7))
 
 /*********************************************************************************************
  * During OTA upgrade, the upgraded device will check the rules of the following three fields.
